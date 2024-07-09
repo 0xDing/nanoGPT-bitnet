@@ -33,7 +33,7 @@ ctx = nullcontext() if device_type == 'cpu' else torch.amp.autocast(device_type=
 if real_data:
     dataset = 'openwebtext'
     data_dir = os.path.join('data', dataset)
-    train_data = np.memmap(os.path.join(data_dir, 'train.bin'), dtype=np.uint16, mode='r')
+    train_data = np.memmap(os.path.join(data_dir, 'train.bin'), dtype=np.uint8, mode='r')
     def get_batch(split):
         data = train_data # note ignore split in benchmarking script
         ix = torch.randint(len(data) - block_size, (batch_size,))
@@ -50,7 +50,7 @@ else:
 # model init
 gptconf = GPTConfig(
     block_size = block_size, # how far back does the model look? i.e. context size
-    n_layer = 12, n_head = 12, n_embd = 768, # size of the model
+    n_layer = 12, n_head = 16, n_embd = 768, n_kv_heads = 8 # size of the model
     dropout = 0, # for determinism
     bias = bias,
 )
@@ -112,6 +112,6 @@ else:
         torch.cuda.synchronize()
         t1 = time.time()
         dt = t1-t0
-        mfu = model.estimate_mfu(batch_size * 1 * num_steps, dt)
+        flops = model.estimate_flops(batch_size * 1 * num_steps, dt)
         if stage == 1:
-            print(f"time per iteration: {dt/num_steps*1000:.4f}ms, MFU: {mfu*100:.2f}%")
+            print(f"time per iteration: {dt/num_steps*1000:.4f}ms, flops: {flops}")

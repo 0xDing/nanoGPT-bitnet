@@ -1,5 +1,11 @@
+> This is a fork of the original nanoGPT repository by Andrej Karpathy, replacing traditional Linear layers with BitNet's binary neural network architecture. This modification aims to reduce computational complexity and memory requirements while maintaining performance.
+> 
+> :warning: **This is an experimental personal project and is not recommended for production use.**
+>
+> Notes:
+> - [SophiaG](https://github.com/Liuhong99/Sophia) is used as the optimizer. Should be use lower learning rate than Adam.
 
-# nanoGPT
+# nanoGPT-BitNet
 
 ![nanoGPT](assets/nanogpt.jpg)
 
@@ -12,7 +18,7 @@ Because the code is so simple, it is very easy to hack to your needs, train new 
 ## install
 
 ```
-pip install torch numpy transformers datasets tiktoken wandb tqdm
+pip install torch numpy transformers datasets tiktoken wandb tqdm bitnet
 ```
 
 Dependencies:
@@ -24,6 +30,7 @@ Dependencies:
 -  `tiktoken` for OpenAI's fast BPE code <3
 -  `wandb` for optional logging <3
 -  `tqdm` for progress bars <3
+-  `bitnet` for pytorch implementation of BitNet
 
 ## quick start
 
